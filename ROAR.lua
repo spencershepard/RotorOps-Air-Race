@@ -1,6 +1,7 @@
-trigger.action.outText("STAY ON THE GROUND!  Start the race coundown from F10 menu when all players ready.", 600, true)
-
 ROAR = {}
+ROAR.version = 0.3
+env.info("ROAR: RotorOps Air Race Script Started v."..ROAR.version)
+trigger.action.outText("STAY ON THE GROUND!  Start the race coundown from F10 menu when all players ready.", 600, true)
 
 ROAR.standings = {}
 ROAR.start_time = 0
@@ -36,6 +37,7 @@ end
 
 function ROAR.smoke()
     for zone, zoneobj in pairs(mist.DBs.zonesByName) do --smoke_color  Green=0 Red=1 White=2 Orange=3 Blue=4 NONE= -1
+		env.info("ROAR: found zone: " .. zone)
         if string.find(zone, "GREEN") then
             trigger.action.smoke(trigger.misc.getZone(zone).point , 0)  
         elseif string.find(zone, "RED") then
@@ -50,7 +52,7 @@ function ROAR.smoke()
     end
     timer.scheduleFunction(ROAR.smoke, {}, timer.getTime() + 280)
 end
-ROAR.smoke()
+timer.scheduleFunction(ROAR.smoke, {}, timer.getTime() + 5)
 
 --trigger.action.setUserFlag('SSB', 100) --set up slot blocking
 
@@ -175,9 +177,6 @@ function ROAR.loop()
 	local id = timer.scheduleFunction(ROAR.loop, 1, timer.getTime() + 0.1)
 end
 
-local function blockSlots()
-
-end
 
 function ROAR.endRace()
 	ROAR.raceEndCountdown(20)
